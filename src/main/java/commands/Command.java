@@ -4,6 +4,5 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 public abstract class Command {
     public String name;
-    public String description;
     public abstract void commandRun(SlashCommandInteractionEvent event);
 }

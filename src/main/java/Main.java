@@ -17,6 +17,7 @@ public class Main {
                 .addEventListeners(new CommandManager())
                 .build();
         bot.getPresence().setActivity(Activity.competing("Amogus"));
+        bot.awaitReady();
         CommandManager.updateCommands(bot);
     }
 }
