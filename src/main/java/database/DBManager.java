@@ -24,7 +24,7 @@ public class DBManager {
             String id = g.getId();
             String name = g.getName();
             boolean inDB = false;
-            ResultSet guildWithCurrentIDinDB = sendSQLwithResult("SELECT id FROM servers WHERE id='"+id+"'");
+            ResultSet guildWithCurrentIDinDB = sendSQLWithResult("SELECT id FROM servers WHERE id='"+id+"'");
             if(guildWithCurrentIDinDB.getLong(1)==Long.parseLong(id)){
                 inDB=true;
             }
@@ -33,9 +33,9 @@ public class DBManager {
                 logger.info("Added server: "+name+" to the database");
             }
         }
-        ResultSet rsServers = sendSQLwithResult("SELECT COUNT(id) FROM servers");
-        int servercount = rsServers.getInt(1);
-        logger.info("There are "+servercount+" Servers in the Database.");
+        ResultSet rsServers = sendSQLWithResult("SELECT COUNT(id) FROM servers");
+        int serverCount = rsServers.getInt(1);
+        logger.info("There are "+serverCount+" Servers in the Database.");
 
     }
 
@@ -44,12 +44,13 @@ public class DBManager {
         try {
             statement = conn.createStatement();
             statement.execute(sql);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static ResultSet sendSQLwithResult(String sql){
+    public static ResultSet sendSQLWithResult(String sql){
         Statement statement;
         try {
             statement = conn.createStatement();
