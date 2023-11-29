@@ -19,16 +19,24 @@ public class DBManager {
         }
         sendSQL("CREATE TABLE IF NOT EXISTS servers (id BIGINT PRIMARY KEY,name VARCHAR(32))");
         List<Guild> guilds = bot.getGuilds();
+
         for(Guild g: guilds){
             String id = g.getId();
             String name = g.getName();
             boolean inDB = false;
-
+            ResultSet guildWithCurrentIDinDB = sendSQLwithResult("SELECT id FROM servers WHERE id='"+id+"'");
+            if(guildWithCurrentIDinDB.getLong(1)==Long.parseLong(id)){
+                inDB=true;
+            }
             if(!inDB){
                 sendSQL("INSERT INTO servers (id,name) VALUES ('"+id+"','"+name+"')");
                 logger.info("Added server: "+name+" to the database");
             }
         }
+        ResultSet rsServers = sendSQLwithResult("SELECT COUNT(id) FROM servers");
+        int servercount = rsServers.getInt(1);
+        logger.info("There are "+servercount+" Servers in the Database.");
+
     }
 
     public static void sendSQL(String sql){
