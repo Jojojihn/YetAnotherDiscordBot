@@ -31,16 +31,20 @@ public class CommandManager extends ListenerAdapter {
         }
     }
 
-    public static void updateCommands(JDA bot){
+    public static void updateCommands(JDA bot) throws InterruptedException {
         registerCommands();
         //Only guild commands for now since they are updated faster for better debugging
         for(Guild g: bot.getGuilds()){
-            CommandListUpdateAction commands = g.updateCommands();
-            List<net.dv8tion.jda.api.interactions.commands.Command> guildCommands = commands.complete();
+            List<net.dv8tion.jda.api.interactions.commands.Command> guildCommands = g.retrieveCommands().complete();
             for(net.dv8tion.jda.api.interactions.commands.Command c: guildCommands){
-                logger.info("Deleting command: " + c.getName());
-                g.deleteCommandById(c.getId()).queue();
+                if(!commands.containsKey(c.getName())) {
+                    logger.warn("Deleting obsolete guild command: " + c.getName());
+                    g.deleteCommandById(c.getId()).queue();
+                }else {
+                    g.deleteCommandById(c.getId()).queue();
+                }
             }
+            bot.awaitReady();
             g.updateCommands().addCommands(
                     Commands.slash("ping", "Pong!"),
                     Commands.slash("echo", "Echoes the message")
