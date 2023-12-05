@@ -1,12 +1,14 @@
 package commands;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import commands.testCommands.*;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +49,7 @@ public class CommandManager extends ListenerAdapter {
             bot.awaitReady();
             g.updateCommands().addCommands(
                     Commands.slash("ping", "Pong!"),
-                    Commands.slash("echo", "Echoes the message")
+                    Commands.slash("echo", "Echoes the message"),
             ).queue();
         }
         logger.info("Updated all commands");
